@@ -1,11 +1,11 @@
 import React from "react";
 
-const ResourceCard = ({ resource }) => {
-    if (!resource) {
+const RessourceCard = ({ ressource }) => {
+    if (!ressource) {
         return null;
     }
 
-    const { id, title, type, description, authorId, createdAt } = resource;
+    const { id, title, type, description, authorId, createdAt } = ressource;
 
     const formattedDate = createdAt 
         ? new Date(createdAt).toLocaleDateString('de-DE', {
@@ -34,4 +34,4 @@ const ResourceCard = ({ resource }) => {
     );
 };
 
-export default ResourceCard;
+export default RessourceCard;
