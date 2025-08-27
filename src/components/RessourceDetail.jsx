@@ -1,9 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const ResourceDetail = ({ resource }) => {
-    if (!resource) {
-        return null;
-    }
+const RessourceDetail = ({ ressourceId, onBack }) => {
+   
+    const [detailRessource, setDetailRessource ] = useState(null);
+    const [isLoadingDetail, setIsLoadingDetail] = useState(true);
+    const [errorDetail, setErrorDetail] = useState(null);
+
+    useEffect(() => {
+        const fetchRessourceDetails = async () => {
+            setIsLoadingDetail(true);
+            setErrorDetail(null);
+
+             try {
+                
+                const response = await fetch(`http://localhost:5002/resources/${ressourceId}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP-Fehler! Status: ${response.status} - ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                setDetailRessource(data);
+
+            } catch (err) {
+                console.error("Fehler beim Abrufen der Daten: ", err);
+                setErrorDetail(err.message);
+
+            } finally {
+                setIsLoadingDetail(false);
+
+            };
+
+        };
+        if (ressourceId) {
+            fetchRessourceDetails();
+        }
+
+    }, [ressourceId])
 
     const { 
         id, 
@@ -14,7 +47,7 @@ const ResourceDetail = ({ resource }) => {
         createdAt, 
         averageRating, 
         feedback 
-    } = resource;
+    } = detailRessource || {};
 
     const formattedDate = createdAt 
         ? new Date(createdAt).toLocaleDateString('de-DE', {
@@ -28,9 +61,66 @@ const ResourceDetail = ({ resource }) => {
 
     const feedbackCount = feedback?.length || 0;
 
+    if (isLoadingDetail) {
+        return (
+            
+        <div className="flex justify-center items-center py-20 bg-gray-50 rounded-2xl shadow-inner-sm">
+                <svg className="animate-spin h-10 w-10 text-main-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+
+                </svg>
+                <p className="ml-4 text-xl text-gray-700 font-medium">Ressourcen-Details  werden geladen...</p>
+            </div>
+        );}
+        
+   
+    
+        if (errorDetail) {
+            return (
+            <div className="bg-red-50 border-l-4 border-red-400 text-red-800 p-6 rounded-r-xl relative text-center" role="alert">;
+            <button 
+            className="text-accent-light hover:underline mb-6 flex items-center transition-colors"
+            onClick={onBack}
+            >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Zurück zu allen Ressourcen
+            </button>
+
+             <strong className="font-bold text-xl block mb-2">Ooooops!...</strong>
+             <span className="block text-lg">Fehler beim laden der Ressourcen-Details: {error}</span>
+             <p className="text-sm mt-3 text-red-700">Bitte überprüfen Sie, ob das Backend unter `http://localhost:5002/` läuft, oder versuchen Sie es später erneut.</p>
+        </div>
+        )}; 
+
+        if ( !detailRessource ) {
+            return (
+                <div className="bg-main-dark/10 border-l-4 border-accent-light text-main-dark p-6 rounded-r-xl text-center" role="alert">
+            <button 
+            className="text-accent-light hover:underline mb-6 flex items-center transition-colors"
+            onClick={onBack}
+            >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Zurück zu allen Ressourcen
+            </button>
+
+                <p className="font-bold text-xl block mb-2">Ressource nicht gefunden</p>
+                <p className="text-lg">Es wurden keine Ressourcen mit der {ressourceId} gefunden.</p>
+
+                </div>
+            )
+            
+        }
+
     return (
         <div className="bg-white p-8 rounded-2xl shadow-lg">
-            <button className="text-accent-light hover:underline mb-6 flex items-center transition-colors">
+            <button 
+            className="text-accent-light hover:underline mb-6 flex items-center transition-colors"
+            onClick={onBack}
+            >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
@@ -77,7 +167,7 @@ const ResourceDetail = ({ resource }) => {
               <div className="border-t border-gray-200 pt-8 mt-8">
                 <h3 className="text-2xl front-bold text-gray-800 mb-6">Feedback</h3>
                 <div className="space-y-6">
-                    {feedback.map(() => (
+                    {feedback.map((item) => (
                         <div key={item.id} className="bg-gray-50 rounded-lg shadow-sm border border-gray-200">
                             <p className="text-gray-800 mb-2 leading-relaxed">{item.feedbackText}</p>
                             <div className="text-xs text-gray-500 flex justify-between items-center">
@@ -90,7 +180,7 @@ const ResourceDetail = ({ resource }) => {
                                     })}
                                 </span>
 
-                            </div>
+                            </div>-
 
                         </div>
                     ))}
@@ -102,6 +192,6 @@ const ResourceDetail = ({ resource }) => {
 
         </div>
     );
-};
 
-export default ResourceDetail;
+}
+export default RessourceDetail;

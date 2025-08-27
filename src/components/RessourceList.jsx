@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RessourceCard from './RessourceCard.jsx';
 
-const RessourceList = () => {
+const RessourceList = ({ onSelectedRessource }) => {
     const [ressources, setRessources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -70,7 +70,10 @@ const RessourceList = () => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {ressources.map((ressource) => (
-                <RessourceCard key={ressource.id} ressource={ressource} />
+                <RessourceCard key={ressource.id} 
+                ressource={ressource} 
+                onClick={() => onSelectedRessource(ressource.id)}
+                />
             ))}
 
         </div>
