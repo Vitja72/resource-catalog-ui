@@ -1,4 +1,4 @@
-export const = formatDate = ( value, 
+export const formatDate = ( value, 
                              local ="de-DE", 
                              options = {
                                 year:'numeric',

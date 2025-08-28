@@ -72,8 +72,7 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
-        });
-       
+        });       
 
     const feedbackCount = feedback?.length || 0;
 
@@ -81,9 +80,7 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
         return (
             <LoadingSpinner lable="Ressourcen werden geladen..."/>
      
-        );}
-        
-   
+        );}   
     
         if (errorDetail) {
             return (
@@ -105,16 +102,13 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
                 message={`Die Ressource mit ID ${resourceId} konnte nicht gefunden werden.`}
             >
                 <BackButton onBack={onBack} label="Zurück zu allen Ressourcen"/>
-            </ErrorMessage>
-
-               
+            </ErrorMessage>               
             )           
         }
 
     return (
         <div className="bg-white p-8 rounded-2xl shadow-lg">
             <BackButton onBack={onBack} label="Zurück zu allen Ressourcen."/>
-
             <h2 className="text-4xl font-extrabold text-main-dark mb-4">{title}</h2>
             <div className="flex items-center space-x-4 mb-6">
                 {type && (
