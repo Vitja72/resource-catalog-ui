@@ -8,18 +8,31 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
     const [detailRessource, setDetailRessource ] = useState(null);
     const [isLoadingDetail, setIsLoadingDetail] = useState(true);
     const [errorDetail, setErrorDetail] = useState(null);
+    const [notFound, setNotFound] = useState(false);
 
     useEffect(() => {
         const fetchRessourceDetails = async () => {
+            await new Promise(resolve => setTimeout(resolve, 1000));
             setIsLoadingDetail(true);
             setErrorDetail(null);
+            setNotFound(false);
 
              try {
                 
                 const response = await fetch(`http://localhost:5002/resources/${ressourceId}`);
 
                 if (!response.ok) {
-                    throw new Error(`HTTP-Fehler! Status: ${response.status} - ${response.statusText}`);
+                    if (response.status === 404) {
+                        setNotFound(true);
+                        setDetailRessource(null);
+                        setIsLoadingDetail(false);
+                        return;
+                    }
+
+                    setErrorDetail({code: response.status, massage: response.statusText});
+                    setDetailRessource(null);
+                    setIsLoadingDetail(false);
+                    return;
                 }
 
                 const data = await response.json();
@@ -84,7 +97,7 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
             </ErrorMessage>
         )}; 
 
-        if ( !detailRessource ) {
+        if ( notFound ) {
             return (                
              <ErrorMessage
                 variant="info"
