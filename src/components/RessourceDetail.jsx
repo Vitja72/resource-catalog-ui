@@ -78,6 +78,9 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
 
     const feedbackCount = feedback?.length || 0;
 
+    const handleFeedbackSubmitted = (updatedRessource) => {
+        setDetailRessource(updatedRessource)};
+
     if (isLoadingDetail) {
         return (
             <LoadingSpinner lable="Ressourcen werden geladen..."/>
@@ -179,7 +182,7 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
             {/*Feedback Form */}
             <div>
                 <h3>Schreib uns gerne ein Feedback 😊</h3>
-                <FeedbackForm resourceId={id}/>
+                <FeedbackForm resourceId={id} onFeedbackSubmitted={{handleFeedbackSubmitted}}/>
             </div>
 
         </div>

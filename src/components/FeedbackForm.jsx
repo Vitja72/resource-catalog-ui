@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 
-const FeedbackForm = ( { resourceId }) => {
+const FeedbackForm = ( { resourceId, onFeedbackSubmitted } ) => {
     const [feedbackText, setFeedbackText] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorPost, setErrorPost] = useState(null)
