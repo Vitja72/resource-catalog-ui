@@ -3,6 +3,7 @@ import LoadingSpinner from "./LoadingSpinner.jsx";
 import BackButton from "./Backbutton.jsx";
 import ErrorMessage from "./ErrorMassage.jsx";
 import FeedbackForm from "./FeedbackForm.jsx";
+import FeedbackItem from "./FeedbackItem.jsx";
 import { formatDate } from "../utils/formatDate.js";
 
 
@@ -160,19 +161,9 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
               <div className="border-t border-gray-200 pt-8 mt-8">
                 <h3 className="text-2xl front-bold text-gray-800 mb-6">Feedback</h3>
                 <div className="space-y-6">
-                    {feedback.map((item) => (
-                        <div key={item.id} className="bg-gray-50 rounded-lg shadow-sm border border-gray-200">
-                            <p className="text-gray-800 mb-2 leading-relaxed">{item.feedbackText}</p>
-                            <div className="text-xs text-gray-500 flex justify-between items-center">
-                                <span>Von: {item.userId}</span>
-                                <span>
-                                    {formatDate(item.timestamp)
-                                    }
-                                </span>
-
-                            </div>-
-
-                        </div>
+                    {feedback.slice().reverse().map((item) => (
+                        <FeedbackItem key={item.id} feedback={item}/>
+                     
                     ))}
 
                 </div>
