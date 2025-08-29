@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 import BackButton from "./Backbutton.jsx";
 import ErrorMessage from "./ErrorMassage.jsx";
+import FeedbackForm from "./FeedbackForm.jsx";
 import { formatDate } from "../utils/formatDate.js";
+
 
 const RessourceDetail = ({ ressourceId, onBack }) => {
    
@@ -108,6 +110,7 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
 
     return (
         <div className="bg-white p-8 rounded-2xl shadow-lg">
+            {/* Back Button zu Ressourcen*/}
             <BackButton onBack={onBack} label="Zurück zu allen Ressourcen."/>
             <h2 className="text-4xl font-extrabold text-main-dark mb-4">{title}</h2>
             <div className="flex items-center space-x-4 mb-6">
@@ -117,6 +120,8 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
                     </span>
                 )}
             </div>
+
+            {/*Ressourcendetails anzeigen*/}
             {description && 
             <p className="text-gray-700 text-lg leading-relaxed mb-8">{description}</p>}
             <div className="border-t border-gray-200 pt-8 mt-8 text-gray-600 text-sm grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -145,6 +150,9 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
                     </p>
                 )}
             </div>
+
+            {/* Feedbackeintrag anzeigen */}
+
             {feedback && feedback.length > 0 && (
               <div className="border-t border-gray-200 pt-8 mt-8">
                 <h3 className="text-2xl front-bold text-gray-800 mb-6">Feedback</h3>
@@ -168,6 +176,11 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
 
               </div>  
             )}
+            {/*Feedback Form */}
+            <div>
+                <h3>Schreib uns gerne ein Feedback 😊</h3>
+                <FeedbackForm resourceId={id}/>
+            </div>
 
         </div>
     );

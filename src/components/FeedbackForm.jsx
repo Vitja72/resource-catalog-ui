@@ -3,8 +3,8 @@ import React, { useState } from "react";
 
 const FeedbackForm = ( { resourceId }) => {
     const [feedbackText, setFeedbackText] = useState('');
-    const [IsSubmitting, setIsSubmitting] = useState(false);
-    const [erroroPost, setErrorPost] = useState(null)
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorPost, setErrorPost] = useState(null)
 
     const handleSubmit = async (event) => {
        event.preventDefault();
@@ -33,21 +33,20 @@ const FeedbackForm = ( { resourceId }) => {
             if (!response.ok) {
                 throw new Error(`HTTP-Fehler! status: ${response.status} - ${response.statusText}`);
             }
-            const createdFeedback = await response.json();
-            console.log('Feedback erfolgreich gesendet', createdFeedback);
+            const updatedRessource = await response.json();
+            console.log('Feedback erfolgreich gesendet', updatedRessource);
 
         } catch (err) {
             console.error("Fehler beim Abrufen der Ressourcen: ", err);
                 setErrorPost(err.message);
 
         } finally {
-            isSubmitting(false);
+            setIsSubmitting(false);
             setFeedbackText('');
 
         }
 
-       setIsSubmitting(false);
-       setFeedbackText('');
+   
        
     };
 
@@ -64,7 +63,7 @@ const FeedbackForm = ( { resourceId }) => {
             </textarea>
             <button
                 type='submit'
-                disable={isSubmitting || feedbackText.trim() === ''}
+                disabled={isSubmitting || feedbackText.trim() === ''}
                 className="bg-main-dark text-white py-2 px-6 rounded-lg hover:bg-main-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-semibold" 
             >
                 {isSubmitting ? 'Wird gesendet...' : 'Feedback senden'}
