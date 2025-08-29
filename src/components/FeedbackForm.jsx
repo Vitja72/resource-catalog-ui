@@ -5,14 +5,14 @@ const FeedbackForm = ( { resourceId, onFeedbackSubmitted } ) => {
     const [feedbackText, setFeedbackText] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorPost, setErrorPost] = useState(null)
-    const [successMessage, setSuccessMassage] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
 
     const handleSubmit = async (event) => {
        event.preventDefault();
        setFeedbackText('');
        setIsSubmitting(true);
        setErrorPost(null);
-       setSuccessMassage(null);
+       setSuccessMessage(null);
 
        const newFeedback = {
         resourceId: resourceId,
@@ -37,7 +37,10 @@ const FeedbackForm = ( { resourceId, onFeedbackSubmitted } ) => {
             }
             const updatedRessource = await response.json();
             console.log('Feedback erfolgreich gesendet', updatedRessource);
-            setSuccessMassage('Ihr Feedback wurde gespeichert.')
+            setSuccessMessage('Ihr Feedback wurde gespeichert.');
+            if (onFeedbackSubmitted) {
+                onFeedbackSubmitted(updatedRessource);
+            }
 
         } catch (err) {
             console.error("Fehler beim Abrufen der Ressourcen: ", err);
@@ -48,9 +51,7 @@ const FeedbackForm = ( { resourceId, onFeedbackSubmitted } ) => {
             setFeedbackText('');
 
         }
-
-   
-       
+      
     };
 
     return (
@@ -58,6 +59,7 @@ const FeedbackForm = ( { resourceId, onFeedbackSubmitted } ) => {
               {successMessage && (
                 <div className="bg-green-50 border-l-4 border-green-400 text-green-800 p-4 reounded-r-xl" role="alert">
                     <p className="front-bold">Gespeichert!</p>
+                    <p>{successMessage}</p>
 
                 </div>
             )}

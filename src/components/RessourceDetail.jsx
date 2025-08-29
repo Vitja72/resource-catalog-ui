@@ -4,6 +4,7 @@ import BackButton from "./Backbutton.jsx";
 import ErrorMessage from "./ErrorMassage.jsx";
 import FeedbackForm from "./FeedbackForm.jsx";
 import FeedbackItem from "./FeedbackItem.jsx";
+import StarRating from "./StarRating.jsx";
 import { formatDate } from "../utils/formatDate.js";
 
 
@@ -80,7 +81,11 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
     const feedbackCount = feedback?.length || 0;
 
     const handleFeedbackSubmitted = (updatedRessource) => {
-        setDetailRessource(updatedRessource)};
+        setDetailRessource(updatedRessource);
+    };
+    const handleRatingSubmittied = (updatedRessource) => {
+        setDetailRessource(updatedRessource)
+    };
 
     if (isLoadingDetail) {
         return (
@@ -155,6 +160,12 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
                 )}
             </div>
 
+            {/* StarRating anzeigen */}
+            <div className="order-t border-gray-200 pt-8 mt-8">
+                <h3 className="text-2xl front-bold text-gray-800 mb-6">Feedback</h3>
+                <StarRating value={averageRating}/>
+            </div>
+
             {/* Feedbackeintrag anzeigen */}
 
             {feedback && feedback.length > 0 && (
@@ -173,7 +184,7 @@ const RessourceDetail = ({ ressourceId, onBack }) => {
             {/*Feedback Form */}
             <div>
                 <h3>Schreib uns gerne ein Feedback 😊</h3>
-                <FeedbackForm resourceId={id} onFeedbackSubmitted={{handleFeedbackSubmitted}}/>
+                <FeedbackForm resourceId={id} onFeedbackSubmitted={handleFeedbackSubmitted}/>
             </div>
 
         </div>
