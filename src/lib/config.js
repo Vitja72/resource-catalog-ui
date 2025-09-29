@@ -6,7 +6,7 @@ export const RESOURCES_API =
 export const TOPICS_API =
   import.meta?.env?.VITE_TOPICS_API_BASE ||
   (typeof process !== "undefined" ? process.env?.REACT_APP_TOPICS_API_BASE : undefined) ||
-  "http://localhost:5005";
+  "http://localhost:5000";
 
 export const LEARNING_API =
   import.meta?.env?.VITE_LEARNING_API_BASE ||
